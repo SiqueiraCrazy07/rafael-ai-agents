@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rafael AI Agents Runtime Dashboard</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Dashboard navigation">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">RA</span>
+          <div>
+            <strong>Rafael AI Agents</strong>
+            <span>Runtime Dashboard V1</span>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="#summary" data-view-link="summary">Summary</a>
+          <a href="#workers" data-view-link="workers">Workers</a>
+          <a href="#timelines" data-view-link="timelines">Timelines</a>
+          <a href="#traces" data-view-link="traces">Traces</a>
+          <a href="#metrics" data-view-link="metrics">Metrics</a>
+        </nav>
+        <div class="readonly-box">
+          <span class="status-dot"></span>
+          <span>Readonly API</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h1>Runtime Operations</h1>
+            <p id="generated-at">Waiting for telemetry</p>
+          </div>
+          <form class="api-config" id="api-config">
+            <label>
+              API Base
+              <input id="api-base" name="apiBase" type="url" value="/api/v1" autocomplete="off">
+            </label>
+            <label>
+              API Key
+              <input id="api-key" name="apiKey" type="password" placeholder="x-api-key" autocomplete="off">
+            </label>
+            <button type="submit">Refresh</button>
+          </form>
+        </header>
+
+        <section class="system-banner" id="system-banner" data-state="loading">
+          Loading dashboard data from readonly API.
+        </section>
+
+        <section class="view active" id="summary" data-view="summary">
+          <div class="section-heading">
+            <h2>Dashboard Summary</h2>
+            <span id="runtime-source">source: pending</span>
+          </div>
+          <div class="metric-grid" id="summary-grid"></div>
+          <div class="two-column">
+            <section class="panel">
+              <h3>Problematic Workflows</h3>
+              <div id="problem-workflows"></div>
+            </section>
+            <section class="panel">
+              <h3>Runtime Flags</h3>
+              <div id="runtime-flags"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="workers" data-view="workers">
+          <div class="section-heading">
+            <h2>Workers View</h2>
+            <span>registry, utilization, health and leases</span>
+          </div>
+          <div id="workers-view"></div>
+        </section>
+
+        <section class="view" id="timelines" data-view="timelines">
+          <div class="section-heading">
+            <h2>Workflow Timelines</h2>
+            <span>states, events, transitions and correlation ids</span>
+          </div>
+          <div id="timelines-view"></div>
+        </section>
+
+        <section class="view" id="traces" data-view="traces">
+          <div class="section-heading">
+            <h2>Execution Traces</h2>
+            <span>assignments, reroutes, retries and throttling</span>
+          </div>
+          <div id="traces-view"></div>
+        </section>
+
+        <section class="view" id="metrics" data-view="metrics">
+          <div class="section-heading">
+            <h2>Metrics View</h2>
+            <span>throughput, retry, rebalance, queue and worker signals</span>
+          </div>
+          <div id="metrics-view"></div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

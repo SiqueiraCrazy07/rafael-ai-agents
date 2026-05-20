@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "generatedAt": null,
+  "source": {
+    "type": null,
+    "processedAt": null
+  },
+  "summary": {
+    "totalOffers": 0,
+    "rejectedCount": 0,
+    "marketplaces": []
+  },
+  "sync": {
+    "mode": "initial",
+    "incrementalReady": true,
+    "changes": {
+      "added": [],
+      "updated": [],
+      "removed": [],
+      "addedCount": 0,
+      "updatedCount": 0,
+      "removedCount": 0
+    }
+  },
+  "offersByMarketplace": {},
+  "offers": [],
+  "apiPayload": {
+    "offers": [],
+    "marketplaces": [],
+    "generatedAt": null
+  }
+}

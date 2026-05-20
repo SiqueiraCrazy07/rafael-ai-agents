@@ -1,0 +1,347 @@
+{
+  "reportId": "supervisor_1778521793448",
+  "generatedAt": "2026-05-11T17:49:53.448Z",
+  "telemetry": {
+    "event": "supervisor_report_generated",
+    "generatedAt": "2026-05-11T17:49:53.448Z",
+    "executionsAnalyzed": 4,
+    "eventsAnalyzed": 36,
+    "incidentsGenerated": 3,
+    "recommendations": 3,
+    "risks": 2,
+    "platformHealthScore": 39,
+    "platformStatus": "critical"
+  },
+  "healthReport": {
+    "reportId": "health_1778521793447",
+    "generatedAt": "2026-05-11T17:49:53.447Z",
+    "platformHealthScore": 39,
+    "summary": {
+      "totalEvents": 36,
+      "executions": 4,
+      "workflows": 3,
+      "failures": 4,
+      "retries": 1,
+      "rollbacks": 2,
+      "completed": 3
+    },
+    "agents": [
+      {
+        "agentId": "site-backend-agent",
+        "healthScore": 72,
+        "executions": 3,
+        "failures": 0,
+        "retries": 1,
+        "rollbacks": 1,
+        "unstable": true,
+        "reasons": [
+          "retry",
+          "rollback"
+        ]
+      },
+      {
+        "agentId": "site-qa-agent",
+        "healthScore": 72,
+        "executions": 4,
+        "failures": 0,
+        "retries": 1,
+        "rollbacks": 1,
+        "unstable": true,
+        "reasons": [
+          "retry",
+          "rollback"
+        ]
+      },
+      {
+        "agentId": "site-frontend-agent",
+        "healthScore": 100,
+        "executions": 1,
+        "failures": 0,
+        "retries": 0,
+        "rollbacks": 0,
+        "unstable": false,
+        "reasons": []
+      }
+    ],
+    "workflows": [
+      {
+        "workflow": "runtime-v1-demo",
+        "project": "promoclub007",
+        "executions": 1,
+        "completed": 1,
+        "failed": 0,
+        "rolledBack": 0,
+        "retries": 1,
+        "successRate": 1,
+        "stabilityScore": 95,
+        "status": "stable"
+      },
+      {
+        "workflow": "runtime-v1-rollback-demo",
+        "project": "promoclub007",
+        "executions": 1,
+        "completed": 0,
+        "failed": 0,
+        "rolledBack": 1,
+        "retries": 0,
+        "successRate": 0,
+        "stabilityScore": 0,
+        "status": "unstable"
+      },
+      {
+        "workflow": "offers-publish",
+        "project": "promoclub007",
+        "executions": 2,
+        "completed": 2,
+        "failed": 0,
+        "rolledBack": 0,
+        "retries": 0,
+        "successRate": 1,
+        "stabilityScore": 100,
+        "status": "stable"
+      }
+    ],
+    "status": "critical"
+  },
+  "workflowStability": [
+    {
+      "workflow": "runtime-v1-demo",
+      "project": "promoclub007",
+      "executions": 1,
+      "completed": 1,
+      "failed": 0,
+      "rolledBack": 0,
+      "retries": 1,
+      "successRate": 1,
+      "stabilityScore": 95,
+      "status": "stable"
+    },
+    {
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "executions": 1,
+      "completed": 0,
+      "failed": 0,
+      "rolledBack": 1,
+      "retries": 0,
+      "successRate": 0,
+      "stabilityScore": 0,
+      "status": "unstable"
+    },
+    {
+      "workflow": "offers-publish",
+      "project": "promoclub007",
+      "executions": 2,
+      "completed": 2,
+      "failed": 0,
+      "rolledBack": 0,
+      "retries": 0,
+      "successRate": 1,
+      "stabilityScore": 100,
+      "status": "stable"
+    }
+  ],
+  "agentHealth": [
+    {
+      "agentId": "site-backend-agent",
+      "healthScore": 72,
+      "executions": 3,
+      "failures": 0,
+      "retries": 1,
+      "rollbacks": 1,
+      "unstable": true,
+      "reasons": [
+        "retry",
+        "rollback"
+      ]
+    },
+    {
+      "agentId": "site-qa-agent",
+      "healthScore": 72,
+      "executions": 4,
+      "failures": 0,
+      "retries": 1,
+      "rollbacks": 1,
+      "unstable": true,
+      "reasons": [
+        "retry",
+        "rollback"
+      ]
+    },
+    {
+      "agentId": "site-frontend-agent",
+      "healthScore": 100,
+      "executions": 1,
+      "failures": 0,
+      "retries": 0,
+      "rollbacks": 0,
+      "unstable": false,
+      "reasons": []
+    }
+  ],
+  "failurePatterns": [
+    {
+      "type": "runtime-failure-signal",
+      "executionId": "exec_20260511134216096_99744cb1",
+      "workflow": "runtime-v1-demo",
+      "project": "promoclub007",
+      "severity": "medium",
+      "evidence": "state_transition"
+    },
+    {
+      "type": "runtime-failure-signal",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "severity": "medium",
+      "evidence": "state_transition"
+    },
+    {
+      "type": "runtime-failure-signal",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "severity": "high",
+      "evidence": "rollback_triggered"
+    },
+    {
+      "type": "runtime-failure-signal",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "severity": "high",
+      "evidence": "rollback_triggered"
+    },
+    {
+      "type": "rollback-completed",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "severity": "high",
+      "evidence": "execution final status rolled_back"
+    }
+  ],
+  "retryPatterns": [
+    {
+      "executionId": "exec_20260511134216096_99744cb1",
+      "workflow": "runtime-v1-demo",
+      "project": "promoclub007",
+      "retries": 1,
+      "maxRetries": 2,
+      "exhausted": false,
+      "risky": true,
+      "retryEvents": 1
+    }
+  ],
+  "incidents": [
+    {
+      "incidentId": "incident_1778521793447_189bbd0bb9e0b",
+      "createdAt": "2026-05-11T17:49:53.447Z",
+      "severity": "medium",
+      "status": "open",
+      "project": "promoclub007",
+      "workflow": "runtime-v1-demo",
+      "executionId": "exec_20260511134216096_99744cb1",
+      "title": "Supervisor detected runtime-failure-signal",
+      "impact": "Workflow degraded",
+      "evidence": [
+        "state_transition"
+      ],
+      "requiredResponse": "Inspect logs and monitor recurrence",
+      "humanRequired": false
+    },
+    {
+      "incidentId": "incident_1778521793447_0657a98c050ff",
+      "createdAt": "2026-05-11T17:49:53.447Z",
+      "severity": "medium",
+      "status": "open",
+      "project": "promoclub007",
+      "workflow": "runtime-v1-rollback-demo",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "title": "Supervisor detected runtime-failure-signal",
+      "impact": "Workflow degraded",
+      "evidence": [
+        "state_transition"
+      ],
+      "requiredResponse": "Inspect logs and monitor recurrence",
+      "humanRequired": false
+    },
+    {
+      "incidentId": "incident_1778521793447_a2cc217800753",
+      "createdAt": "2026-05-11T17:49:53.447Z",
+      "severity": "high",
+      "status": "open",
+      "project": "promoclub007",
+      "workflow": "runtime-v1-rollback-demo",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "title": "Supervisor detected runtime-failure-signal",
+      "impact": "Operational recovery required",
+      "evidence": [
+        "rollback_triggered"
+      ],
+      "requiredResponse": "Review rollback/recovery and validate before next execution",
+      "humanRequired": true
+    }
+  ],
+  "recoveryRecommendations": [
+    {
+      "recommendationId": "recovery_1778521793447_fad150b80dc1e",
+      "createdAt": "2026-05-11T17:49:53.447Z",
+      "executionId": "exec_20260511134216096_99744cb1",
+      "workflow": "runtime-v1-demo",
+      "project": "promoclub007",
+      "severity": "medium",
+      "action": "monitor_and_retry_if_transient",
+      "summary": "Retry may be allowed if the failure is transient and output validation passes.",
+      "requiredValidation": [
+        "runtime-state-validation",
+        "checkpoint-validation"
+      ],
+      "rollbackRecommended": false
+    },
+    {
+      "recommendationId": "recovery_1778521793447_be2a7ae3a0542",
+      "createdAt": "2026-05-11T17:49:53.447Z",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "severity": "medium",
+      "action": "monitor_and_retry_if_transient",
+      "summary": "Retry may be allowed if the failure is transient and output validation passes.",
+      "requiredValidation": [
+        "runtime-state-validation",
+        "checkpoint-validation"
+      ],
+      "rollbackRecommended": false
+    },
+    {
+      "recommendationId": "recovery_1778521793447_ab6b8fdf210fa",
+      "createdAt": "2026-05-11T17:49:53.447Z",
+      "executionId": "exec_20260511134216128_56a461d5",
+      "workflow": "runtime-v1-rollback-demo",
+      "project": "promoclub007",
+      "severity": "high",
+      "action": "human_review_required",
+      "summary": "Block autonomous recovery and require human review before retry or rollback.",
+      "requiredValidation": [
+        "runtime-state-validation",
+        "checkpoint-validation"
+      ],
+      "rollbackRecommended": true
+    }
+  ],
+  "operationalRisks": [
+    {
+      "level": "high",
+      "type": "platform-health-degraded",
+      "description": "Platform health score is below operational target.",
+      "mitigation": "Review incidents and block high-risk workflows until validated."
+    },
+    {
+      "level": "high",
+      "type": "human-review-required",
+      "description": "runtime-v1-rollback-demo requires human review.",
+      "mitigation": "Review rollback/recovery and validate before next execution"
+    }
+  ]
+}

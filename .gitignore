@@ -1,0 +1,10 @@
+automation/config/service-account.json
+*.env
+.env
+node_modules/
+automation/node_modules/
+memory/
+runtime-data/
+logs/
+*.sqlite
+*.db
