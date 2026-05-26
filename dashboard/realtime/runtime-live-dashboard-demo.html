@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Runtime Live Dashboard Demo</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f7f8fa;
+        --panel: #ffffff;
+        --text: #17202a;
+        --muted: #5d6d7e;
+        --line: #d9dee7;
+        --accent: #1f7a8c;
+        --warn: #ad5f00;
+        --ok: #1d7f4f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      header,
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        padding: 24px 0 12px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        letter-spacing: 0;
+      }
+
+      .meta {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 12px;
+        margin: 16px 0;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        min-height: 110px;
+      }
+
+      .label {
+        color: var(--muted);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+
+      .value {
+        margin-top: 8px;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .ok {
+        color: var(--ok);
+      }
+
+      .warn {
+        color: var(--warn);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+
+      th {
+        color: var(--muted);
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Runtime Live Dashboard</h1>
+      <div class="meta" id="meta">Loading readonly runtime stream snapshot</div>
+    </header>
+    <main>
+      <section class="grid" id="cards"></section>
+      <table>
+        <thead>
+          <tr>
+            <th>Channel</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Correlation</th>
+          </tr>
+        </thead>
+        <tbody id="events"></tbody>
+      </table>
+    </main>
+    <script src="./runtime-live-dashboard-snapshot.js"></script>
+    <script>
+      const snapshot = window.RUNTIME_LIVE_DASHBOARD_SNAPSHOT || {};
+      const telemetry = snapshot.liveTelemetry || {};
+      const realtime = snapshot.dashboardRealtime || {};
+      const cards = document.getElementById("cards");
+      const events = document.getElementById("events");
+      document.getElementById("meta").textContent = `${snapshot.streamingDemoId || "snapshot"} · ${snapshot.websocket?.url || "snapshot fallback"} · readonly`;
+
+      [
+        ["Events", telemetry.throughput?.events || 0, "ok"],
+        ["Queue Pressure", telemetry.queuePressure || "unknown", telemetry.queuePressure === "high" ? "warn" : "ok"],
+        ["Broker Health", telemetry.brokerHealth || "unknown", "ok"],
+        ["Fallback", snapshot.fallbackSnapshot?.mode || "snapshot", "warn"]
+      ].forEach(([label, value, tone]) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `<div class="label">${label}</div><div class="value ${tone}">${value}</div>`;
+        cards.appendChild(card);
+      });
+
+      (realtime.liveRuntimeUpdates || []).forEach((event) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${event.channel}</td><td>${event.type}</td><td>${event.status}</td><td>${event.correlationId}</td>`;
+        events.appendChild(row);
+      });
+    </script>
+  </body>
+</html>

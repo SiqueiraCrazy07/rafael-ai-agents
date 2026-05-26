@@ -1,0 +1,39 @@
+services:
+  streaming:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/streaming.Dockerfile
+    read_only: true
+    networks:
+      - rafael-observability
+    environment:
+      RUNTIME_READONLY_MODE: "true"
+      RUNTIME_STREAM_LOCAL_ONLY: "true"
+      RUNTIME_SAFE_MODE: "true"
+    volumes:
+      - runtime-data:/app/runtime-data
+      - runtime-memory:/app/memory
+
+  dashboard:
+    build:
+      context: ../..
+      dockerfile: infrastructure/docker/dashboard.Dockerfile
+    read_only: true
+    networks:
+      - rafael-observability
+    environment:
+      RUNTIME_READONLY_MODE: "true"
+      DASHBOARD_READONLY_MODE: "true"
+      API_REQUIRE_AUTH: "true"
+    volumes:
+      - runtime-data:/app/runtime-data:ro
+      - runtime-memory:/app/memory:ro
+
+networks:
+  rafael-observability:
+    driver: bridge
+    internal: true
+
+volumes:
+  runtime-data:
+  runtime-memory:
