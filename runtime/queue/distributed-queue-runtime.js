@@ -140,7 +140,12 @@ class DistributedQueueRuntime {
     this.retryOrchestrator = new DistributedRetryOrchestrator();
     this.saturationProtection = new QueueSaturationProtection();
     this.rebalancer = new QueueRebalancer();
-    this.eventBus = new DistributedRuntimeEventBus({ rootDir, maxInMemoryEvents: 50, maxEventsPerWindow: 100 });
+    this.eventBus = new DistributedRuntimeEventBus({
+      rootDir,
+      maxInMemoryEvents: 50,
+      maxEventsPerWindow: 100,
+      useDatabase: process.env.RUNTIME_EVENT_BUS_SQLITE_ENABLED === "true"
+    });
   }
 
   initialize() {

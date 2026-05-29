@@ -1,13 +1,5 @@
 const fs = require("node:fs");
 const path = require("node:path");
-const { runRuntimeObservabilityDemo } = require("../../../telemetry/runtime-observability-demo");
-const { runRuntimeRecoveryDemo } = require("../../../self-healing/demo/runtime-recovery-demo");
-const { runBrokerAdapterDemo } = require("../../brokers/demo/broker-adapter-demo");
-const { DistributedRuntimeCoordinator } = require("../../distributed/distributed-runtime-coordinator");
-const { DistributedQueueRuntime } = require("../../queue/distributed-queue-runtime");
-const { RuntimeStateReplicator } = require("../../replication/runtime-state-replicator");
-const { runWorkflowReplayDemo } = require("../../replay/demo/workflow-replay-demo");
-const { RuntimeMessageBus } = require("../../transport/runtime-message-bus");
 const { RuntimeDashboardStreamAdapter } = require("../runtime-dashboard-stream-adapter");
 const { RuntimeEventStreamer } = require("../runtime-event-streamer");
 const { RuntimeLiveTelemetryStream } = require("../runtime-live-telemetry-stream");
@@ -53,6 +45,45 @@ function sourceFromReport(report, sourcePath = null) {
   };
 }
 
+function readLatestSummary(rootDir, relativeDir, idFields = []) {
+  const directory = path.join(rootDir, relativeDir);
+  if (!fs.existsSync(directory)) {
+    return sourceFromReport(null);
+  }
+  const files = fs.readdirSync(directory)
+    .filter((file) => file.endsWith(".json"))
+    .map((file) => {
+      const sourcePath = path.join(directory, file);
+      return { sourcePath, mtimeMs: fs.statSync(sourcePath).mtimeMs };
+    })
+    .sort((left, right) => right.mtimeMs - left.mtimeMs);
+
+  for (const file of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(file.sourcePath, "utf8"));
+      const reportId = idFields.map((field) => data[field]).find(Boolean) || data.status || "metadata-readable";
+      return sourceFromReport({
+        status: data.status || data.readiness || "metadata-readable",
+        reportId,
+        workflowId: data.workflowId || data.seededExecution?.workflowId,
+        correlationId: data.correlationId || data.seededExecution?.correlationId,
+        metrics: data.metrics,
+        pressure: data.pressure,
+        backpressure: data.backpressure,
+        clusterState: data.clusterState,
+        health: data.health,
+        transportMetadata: data.transportMetadata,
+        nodeHealth: data.nodeHealth,
+        nodeSync: data.nodeSync,
+        saturationProtection: data.saturationProtection
+      }, file.sourcePath);
+    } catch (error) {
+      // Continue to the next report; stale partial JSON should not break streaming fallback.
+    }
+  }
+  return sourceFromReport(null);
+}
+
 async function runRuntimeStreamingDemo({ rootDir = process.cwd(), silent = false } = {}) {
   const registry = new RuntimeStreamRegistry();
   const auth = new RuntimeStreamAuth();
@@ -80,34 +111,25 @@ async function runRuntimeStreamingDemo({ rootDir = process.cwd(), silent = false
   ];
 
   const websocket = await websocketServer.start();
-  const broker = runBrokerAdapterDemo({ rootDir, silent: true });
-  const transport = new RuntimeMessageBus({ rootDir }).runDemo();
-  const distributedRuntime = new DistributedRuntimeCoordinator({ rootDir }).runDemo();
-  const distributedQueue = new DistributedQueueRuntime({ rootDir }).runDemo();
-  const replication = new RuntimeStateReplicator({ rootDir }).runDemo();
-  const replay = runWorkflowReplayDemo();
-  const selfHealing = runRuntimeRecoveryDemo();
-  const telemetry = runRuntimeObservabilityDemo({});
-
   const sources = {
-    workers: sourceFromReport({ status: "workers-readable-via-telemetry", metrics: telemetry.metrics }),
-    queue: sourceFromReport({ status: "queue-readable-via-distributed-queue", pressure: distributedQueue.pressure }),
-    distributedQueue: sourceFromReport(distributedQueue, distributedQueue.persistence?.memoryPath),
-    brokers: sourceFromReport(broker, broker.persistence?.memoryPath),
-    transport: sourceFromReport(transport, transport.persistence?.memoryPath),
-    replication: sourceFromReport(replication, replication.persistence?.memoryPath),
-    replay: sourceFromReport(replay, replay.persistence?.memoryPath),
-    selfHealing: sourceFromReport(selfHealing, selfHealing.persistence?.memoryPath),
-    telemetry: sourceFromReport(telemetry, telemetry.persistence?.memoryPath),
+    workers: readLatestSummary(rootDir, "memory/multiprocess-workers", ["multiprocessWorkerDemoId"]),
+    queue: readLatestSummary(rootDir, "memory/distributed-queue", ["distributedQueueReportId"]),
+    distributedQueue: readLatestSummary(rootDir, "memory/distributed-queue", ["distributedQueueReportId"]),
+    brokers: readLatestSummary(rootDir, "memory/brokers", ["brokerDemoId"]),
+    transport: readLatestSummary(rootDir, "memory/transport", ["transportReportId"]),
+    replication: readLatestSummary(rootDir, "memory/replication", ["replicationReportId"]),
+    replay: readLatestSummary(rootDir, "memory/replay", ["replayDemoId"]),
+    selfHealing: readLatestSummary(rootDir, "memory/self-healing", ["runtimeRecoveryDemoId", "recoveryDemoId"]),
+    telemetry: readLatestSummary(rootDir, "memory/telemetry", ["telemetryReportId"]),
     dashboard: sourceFromReport({ status: "dashboard-stream-ready", readonly: true }),
-    eventBus: sourceFromReport(transport.eventBus || null)
+    eventBus: readLatestSummary(rootDir, "memory/event-bus", ["eventBusDemoId"])
   };
 
   const events = eventStreamer.buildEvents(sources);
   const liveTelemetry = liveTelemetryStream.build({
     telemetry: sources.telemetry,
     distributedQueue: sources.distributedQueue,
-    distributedRuntime: sourceFromReport(distributedRuntime, distributedRuntime.persistence?.memoryPath),
+    distributedRuntime: readLatestSummary(rootDir, "memory/distributed-runtime", ["distributedRuntimeDemoId"]),
     brokers: sources.brokers,
     transport: sources.transport,
     replication: sources.replication
@@ -164,14 +186,14 @@ async function runRuntimeStreamingDemo({ rootDir = process.cwd(), silent = false
     dashboardRealtime,
     fallbackSnapshot,
     integrations: {
-      brokerAdapterLayer: broker.brokerDemoId,
-      runtimeTransport: transport.transportReportId,
-      distributedRuntime: distributedRuntime.distributedRuntimeDemoId,
-      distributedQueue: distributedQueue.distributedQueueReportId,
-      replication: replication.replicationReportId,
-      replay: replay.replayDemoId || "workflow-replay-readable",
-      selfHealing: selfHealing.recoveryDemoId || "self-healing-readable",
-      telemetry: telemetry.telemetryReportId,
+      brokerAdapterLayer: sources.brokers.data?.reportId || "broker-source-unavailable-safe-fallback",
+      runtimeTransport: sources.transport.data?.reportId || "transport-source-unavailable-safe-fallback",
+      distributedRuntime: readLatestSummary(rootDir, "memory/distributed-runtime", ["distributedRuntimeDemoId"]).data?.reportId || "distributed-runtime-source-unavailable-safe-fallback",
+      distributedQueue: sources.distributedQueue.data?.reportId || "distributed-queue-source-unavailable-safe-fallback",
+      replication: sources.replication.data?.reportId || "replication-source-unavailable-safe-fallback",
+      replay: sources.replay.data?.reportId || "workflow-replay-readable",
+      selfHealing: sources.selfHealing.data?.reportId || "self-healing-readable",
+      telemetry: sources.telemetry.data?.reportId || "telemetry-source-unavailable-safe-fallback",
       dashboard: "dashboard realtime adapter and static demo snapshot generated",
       eventBus: "runtime stream events are event-bus compatible"
     },
@@ -223,7 +245,9 @@ async function runRuntimeStreamingDemo({ rootDir = process.cwd(), silent = false
 }
 
 if (require.main === module) {
-  runRuntimeStreamingDemo().catch((error) => {
+  runRuntimeStreamingDemo().then(() => {
+    setImmediate(() => process.exit(0));
+  }).catch((error) => {
     console.error(JSON.stringify({
       status: "runtime_streaming_demo_failed",
       error: error.message,
@@ -232,7 +256,7 @@ if (require.main === module) {
         reason: "streaming-demo-error"
       }
     }, null, 2));
-    process.exitCode = 1;
+    setImmediate(() => process.exit(1));
   });
 }
 

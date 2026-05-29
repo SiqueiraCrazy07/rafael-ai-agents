@@ -48,6 +48,10 @@ Os compose declaram:
 - health metadata;
 - environment metadata;
 - `read_only: true`.
+- `cap_drop: ALL`;
+- `security_opt: no-new-privileges:true`;
+- `tmpfs` efemero para `/tmp`;
+- labels de metadata readonly-safe.
 
 ## Container Policy
 
@@ -106,6 +110,8 @@ O audit registra:
 - Telemetry;
 - Dashboard;
 - Multi-process Workers.
+
+As integracoes sao lidas por metadata readonly em `memory/` quando possivel, preservando fallback JSON e evitando reexecutar subsistemas pesados dentro de demos compostos.
 
 ## Persistencia
 

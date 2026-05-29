@@ -4,8 +4,17 @@ services:
       context: ../..
       dockerfile: infrastructure/docker/runtime.Dockerfile
     read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     networks:
       - rafael-runtime
+    labels:
+      rafael.runtime.service: "runtime-core"
+      rafael.runtime.role: "runtime-core"
+      rafael.runtime.readonly-safe: "true"
+      rafael.runtime.kubernetes-deploy: "false"
     environment:
       RUNTIME_READONLY_MODE: "true"
       RUNTIME_SAFE_MODE: "true"
@@ -13,6 +22,8 @@ services:
     volumes:
       - runtime-data:/app/runtime-data
       - runtime-memory:/app/memory
+    tmpfs:
+      - /tmp
     healthcheck:
       test: ["CMD", "node", "-e", "console.log('runtime-core-health-readonly')"]
       interval: 30s
@@ -24,8 +35,17 @@ services:
       context: ../..
       dockerfile: infrastructure/docker/worker.Dockerfile
     read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     networks:
       - rafael-runtime
+    labels:
+      rafael.runtime.service: "workers"
+      rafael.runtime.role: "workers"
+      rafael.runtime.readonly-safe: "true"
+      rafael.runtime.kubernetes-deploy: "false"
     environment:
       RUNTIME_READONLY_MODE: "true"
       RUNTIME_SAFE_MODE: "true"
@@ -33,21 +53,45 @@ services:
     volumes:
       - runtime-data:/app/runtime-data
       - runtime-memory:/app/memory
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('workers-health-readonly')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   gateway:
     build:
       context: ../..
       dockerfile: infrastructure/docker/gateway.Dockerfile
     read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     networks:
       - rafael-runtime
+    labels:
+      rafael.runtime.service: "gateway"
+      rafael.runtime.role: "gateway"
+      rafael.runtime.readonly-safe: "true"
+      rafael.runtime.kubernetes-deploy: "false"
     environment:
       RUNTIME_READONLY_MODE: "true"
+      RUNTIME_SAFE_MODE: "true"
       RUNTIME_GATEWAY_PUBLIC: "false"
       API_REQUIRE_AUTH: "true"
     volumes:
       - runtime-data:/app/runtime-data
       - runtime-memory:/app/memory
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('gateway-health-readonly')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 networks:
   rafael-runtime:

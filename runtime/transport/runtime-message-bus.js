@@ -74,7 +74,12 @@ class RuntimeMessageBus {
     this.retryTransport = new RuntimeRetryTransport();
     this.deadLetterQueue = new RuntimeDeadLetterQueue();
     this.audit = new RuntimeTransportAudit({ rootDir });
-    this.eventBus = new DistributedRuntimeEventBus({ rootDir, maxInMemoryEvents: 50, maxEventsPerWindow: 100 });
+    this.eventBus = new DistributedRuntimeEventBus({
+      rootDir,
+      maxInMemoryEvents: 50,
+      maxEventsPerWindow: 100,
+      useDatabase: process.env.RUNTIME_EVENT_BUS_SQLITE_ENABLED === "true"
+    });
   }
 
   initialize() {

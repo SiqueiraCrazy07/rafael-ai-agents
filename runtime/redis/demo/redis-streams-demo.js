@@ -1,9 +1,5 @@
-const { runBrokerAdapterDemo } = require("../../brokers/demo/broker-adapter-demo");
-const { DistributedQueueRuntime } = require("../../queue/distributed-queue-runtime");
-const { runWorkflowReplayDemo } = require("../../replay/demo/workflow-replay-demo");
-const { RuntimeMessageBus, readLatestJson } = require("../../transport/runtime-message-bus");
-const { runRuntimeRecoveryDemo } = require("../../../self-healing/demo/runtime-recovery-demo");
-const { runRuntimeObservabilityDemo } = require("../../../telemetry/runtime-observability-demo");
+const fs = require("node:fs");
+const path = require("node:path");
 const { RedisStreamAudit } = require("../redis-stream-audit");
 const { RedisStreamConsumer } = require("../redis-stream-consumer");
 const { RedisStreamFallback } = require("../redis-stream-fallback");
@@ -13,8 +9,55 @@ const { RedisStreamPublisher } = require("../redis-stream-publisher");
 const { RedisStreamRetry } = require("../redis-stream-retry");
 const { RedisStreamsAdapter } = require("../redis-streams-adapter");
 
+function readLatestSummary(rootDir, relativeDir, idFields = []) {
+  const directory = path.join(rootDir, relativeDir);
+  if (!fs.existsSync(directory)) {
+    return {
+      available: false,
+      sourcePath: null,
+      data: null,
+      fallback: { safeMode: true, reason: "directory-unavailable" }
+    };
+  }
+  const files = fs.readdirSync(directory)
+    .filter((file) => file.endsWith(".json"))
+    .map((file) => {
+      const sourcePath = path.join(directory, file);
+      return { sourcePath, mtimeMs: fs.statSync(sourcePath).mtimeMs };
+    })
+    .sort((left, right) => right.mtimeMs - left.mtimeMs);
+
+  for (const file of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(file.sourcePath, "utf8"));
+      return {
+        available: true,
+        sourcePath: file.sourcePath,
+        data: {
+          status: data.status,
+          reportId: idFields.map((field) => data[field]).find(Boolean) || data.status || "metadata-readable",
+          envelopes: Array.isArray(data.envelopes) ? data.envelopes.slice(0, 3) : []
+        },
+        fallback: null
+      };
+    } catch (error) {
+      // Continue to next file; stale partial JSON should not disable fallback.
+    }
+  }
+  return {
+    available: false,
+    sourcePath: null,
+    data: null,
+    fallback: { safeMode: true, reason: "no-readable-json-files" }
+  };
+}
+
 function buildDemoEnvelopes(transport) {
-  const envelopes = Array.isArray(transport.envelopes) ? transport.envelopes : [];
+  const envelopes = Array.isArray(transport.envelopes)
+    ? transport.envelopes
+    : Array.isArray(transport.data?.envelopes)
+      ? transport.data.envelopes
+      : [];
   if (envelopes.length > 0) {
     return envelopes.slice(0, 3);
   }
@@ -40,10 +83,10 @@ async function runRedisStreamsDemo({ rootDir = process.cwd() } = {}) {
   const fallbackManager = new RedisStreamFallback({ rootDir });
   const audit = new RedisStreamAudit({ rootDir });
 
-  const broker = runBrokerAdapterDemo({ rootDir, silent: true });
-  const transport = new RuntimeMessageBus({ rootDir }).runDemo();
-  const distributedQueue = new DistributedQueueRuntime({ rootDir }).runDemo();
-  const replay = runWorkflowReplayDemo();
+  const broker = readLatestSummary(rootDir, "memory/brokers", ["brokerDemoId"]);
+  const transport = readLatestSummary(rootDir, "memory/transport", ["transportReportId"]);
+  const distributedQueue = readLatestSummary(rootDir, "memory/distributed-queue", ["distributedQueueReportId"]);
+  const replay = readLatestSummary(rootDir, "memory/replay", ["replayDemoId"]);
 
   const streams = [
     "runtime.transport.stream",
@@ -84,10 +127,10 @@ async function runRedisStreamsDemo({ rootDir = process.cwd() } = {}) {
   const fallback = fallbackManager.choose({ redisHealth: health });
   const retry = retryEngine.plan({ deliveries });
 
-  const selfHealing = runRuntimeRecoveryDemo();
-  const telemetry = runRuntimeObservabilityDemo({});
-  const streamingSource = readLatestJson(rootDir, "memory/streaming");
-  const multiprocessWorkersSource = readLatestJson(rootDir, "memory/multiprocess-workers");
+  const selfHealing = readLatestSummary(rootDir, "memory/self-healing", ["runtimeRecoveryDemoId", "recoveryDemoId"]);
+  const telemetry = readLatestSummary(rootDir, "memory/telemetry", ["telemetryReportId"]);
+  const streamingSource = readLatestSummary(rootDir, "memory/streaming", ["streamingDemoId"]);
+  const multiprocessWorkersSource = readLatestSummary(rootDir, "memory/multiprocess-workers", ["multiprocessWorkerDemoId"]);
 
   const report = {
     redisStreamsDemoId: `redis_streams_demo_${Date.now()}`,
@@ -133,15 +176,15 @@ async function runRedisStreamsDemo({ rootDir = process.cwd() } = {}) {
     retryMetadata: retry,
     fallback,
     integrations: {
-      brokerLayer: broker.brokerDemoId,
-      runtimeTransport: transport.transportReportId,
-      distributedQueue: distributedQueue.distributedQueueReportId,
-      replay: replay.replayDemoId || replay.status,
-      selfHealing: selfHealing.runtimeRecoveryDemoId || selfHealing.status,
-      streaming: streamingSource.available ? streamingSource.data.streamingDemoId || streamingSource.data.status : "streaming-source-unavailable-safe-fallback",
-      telemetry: telemetry.telemetryReportId,
+      brokerLayer: broker.data?.reportId || "broker-source-unavailable-safe-fallback",
+      runtimeTransport: transport.data?.reportId || "transport-source-unavailable-safe-fallback",
+      distributedQueue: distributedQueue.data?.reportId || "distributed-queue-source-unavailable-safe-fallback",
+      replay: replay.data?.reportId || "replay-source-unavailable-safe-fallback",
+      selfHealing: selfHealing.data?.reportId || "self-healing-source-unavailable-safe-fallback",
+      streaming: streamingSource.available ? streamingSource.data.reportId || streamingSource.data.status : "streaming-source-unavailable-safe-fallback",
+      telemetry: telemetry.data?.reportId || "telemetry-source-unavailable-safe-fallback",
       dashboard: "redis report is dashboard-readable",
-      multiprocessWorkers: multiprocessWorkersSource.available ? multiprocessWorkersSource.data.multiprocessWorkerDemoId || multiprocessWorkersSource.data.status : "multiprocess-workers-source-unavailable-safe-fallback",
+      multiprocessWorkers: multiprocessWorkersSource.available ? multiprocessWorkersSource.data.reportId || multiprocessWorkersSource.data.status : "multiprocess-workers-source-unavailable-safe-fallback",
       localBrokerPreserved: true
     },
     fallbackBehavior: {
@@ -186,7 +229,9 @@ async function runRedisStreamsDemo({ rootDir = process.cwd() } = {}) {
 }
 
 if (require.main === module) {
-  runRedisStreamsDemo().catch((error) => {
+  runRedisStreamsDemo().then(() => {
+    setImmediate(() => process.exit(0));
+  }).catch((error) => {
     console.error(JSON.stringify({
       status: "redis_streams_demo_failed",
       error: error.message,
@@ -195,7 +240,7 @@ if (require.main === module) {
         reason: "redis-streams-demo-error"
       }
     }, null, 2));
-    process.exitCode = 1;
+    setImmediate(() => process.exit(1));
   });
 }
 

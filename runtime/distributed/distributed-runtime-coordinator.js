@@ -37,7 +37,12 @@ class DistributedRuntimeCoordinator {
     this.clusterState = new RuntimeClusterState();
     this.failureDetector = new RuntimeNodeFailureDetector();
     this.router = new RuntimeNodeRouter();
-    this.eventBus = new DistributedRuntimeEventBus({ rootDir, maxInMemoryEvents: 50, maxEventsPerWindow: 100 });
+    this.eventBus = new DistributedRuntimeEventBus({
+      rootDir,
+      maxInMemoryEvents: 50,
+      maxEventsPerWindow: 100,
+      useDatabase: process.env.RUNTIME_EVENT_BUS_SQLITE_ENABLED === "true"
+    });
   }
 
   initialize() {

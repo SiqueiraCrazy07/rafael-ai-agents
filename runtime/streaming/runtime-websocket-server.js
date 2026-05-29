@@ -144,9 +144,32 @@ class RuntimeWebSocketServer {
       return Promise.resolve({ stopped: true, reason: "server-not-started" });
     }
     return new Promise((resolve) => {
-      this.server.close(() => {
+      let settled = false;
+      const finish = (result) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
         this.started = false;
-        resolve({ stopped: true, readonly: true });
+        this.server = null;
+        resolve(result);
+      };
+
+      if (typeof this.server.closeAllConnections === "function") {
+        this.server.closeAllConnections();
+      }
+      const timeout = setTimeout(() => {
+        finish({
+          stopped: true,
+          readonly: true,
+          forced: true,
+          reason: "websocket-server-close-timeout"
+        });
+      }, 1_000);
+      timeout.unref?.();
+      this.server.close(() => {
+        clearTimeout(timeout);
+        finish({ stopped: true, readonly: true });
       });
     });
   }

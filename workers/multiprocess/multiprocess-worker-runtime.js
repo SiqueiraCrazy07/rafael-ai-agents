@@ -1,10 +1,5 @@
-const { DistributedRuntimeCoordinator } = require("../../runtime/distributed/distributed-runtime-coordinator");
-const { DistributedQueueRuntime } = require("../../runtime/queue/distributed-queue-runtime");
-const { runWorkflowReplayDemo } = require("../../runtime/replay/demo/workflow-replay-demo");
-const { RuntimeMessageBus } = require("../../runtime/transport/runtime-message-bus");
-const { runRuntimeRecoveryDemo } = require("../../self-healing/demo/runtime-recovery-demo");
-const { runRuntimeObservabilityDemo } = require("../../telemetry/runtime-observability-demo");
-const { WorkerScheduler } = require("../scheduler/worker-scheduler");
+const fs = require("node:fs");
+const path = require("node:path");
 const { WorkerProcessAudit } = require("./worker-process-audit");
 const { WorkerProcessHeartbeat } = require("./worker-process-heartbeat");
 const { WorkerProcessIsolation } = require("./worker-process-isolation");
@@ -12,6 +7,48 @@ const { WorkerProcessLauncher } = require("./worker-process-launcher");
 const { WorkerProcessRecovery } = require("./worker-process-recovery");
 const { WorkerProcessRegistry } = require("./worker-process-registry");
 const { WorkerProcessSupervisor } = require("./worker-process-supervisor");
+
+function readLatestReport(rootDir, relativeDir, idFields = []) {
+  const directory = path.join(rootDir, relativeDir);
+  if (!fs.existsSync(directory)) {
+    return {
+      available: false,
+      sourcePath: null,
+      id: "source-unavailable-safe-fallback",
+      fallback: { safeMode: true, reason: "directory-unavailable" }
+    };
+  }
+
+  const files = fs.readdirSync(directory)
+    .filter((file) => file.endsWith(".json"))
+    .map((file) => {
+      const sourcePath = path.join(directory, file);
+      return { sourcePath, mtimeMs: fs.statSync(sourcePath).mtimeMs };
+    })
+    .sort((left, right) => right.mtimeMs - left.mtimeMs);
+
+  for (const file of files) {
+    try {
+      const data = JSON.parse(fs.readFileSync(file.sourcePath, "utf8"));
+      const id = idFields.map((field) => data[field]).find(Boolean) || data.status || "metadata-readable";
+      return {
+        available: true,
+        sourcePath: file.sourcePath,
+        id,
+        fallback: null
+      };
+    } catch (error) {
+      // Try the next report; stale or partial JSON should not block the demo.
+    }
+  }
+
+  return {
+    available: false,
+    sourcePath: null,
+    id: "no-readable-json-safe-fallback",
+    fallback: { safeMode: true, reason: "no-readable-json-files" }
+  };
+}
 
 function waitForProcess({ child, processRecord, heartbeat, registry, timeoutMs }) {
   return new Promise((resolve) => {
@@ -266,23 +303,32 @@ class MultiprocessWorkerRuntime {
   }
 
   buildIntegrations() {
-    const distributed = new DistributedRuntimeCoordinator({ rootDir: this.rootDir }).runDemo();
-    const distributedQueue = new DistributedQueueRuntime({ rootDir: this.rootDir }).runDemo();
-    const replay = runWorkflowReplayDemo();
-    const selfHealing = runRuntimeRecoveryDemo();
-    const transport = new RuntimeMessageBus({ rootDir: this.rootDir }).runDemo();
-    const telemetry = runRuntimeObservabilityDemo({});
-    const scheduler = new WorkerScheduler({ rootDir: this.rootDir }).schedule();
+    const distributed = readLatestReport(this.rootDir, "memory/distributed-runtime", ["distributedRuntimeDemoId"]);
+    const distributedQueue = readLatestReport(this.rootDir, "memory/distributed-queue", ["distributedQueueReportId"]);
+    const replay = readLatestReport(this.rootDir, "memory/replay", ["replayDemoId"]);
+    const selfHealing = readLatestReport(this.rootDir, "memory/self-healing", ["runtimeRecoveryDemoId", "recoveryDemoId"]);
+    const transport = readLatestReport(this.rootDir, "memory/transport", ["transportReportId"]);
+    const telemetry = readLatestReport(this.rootDir, "memory/telemetry", ["telemetryReportId"]);
+    const scheduler = readLatestReport(this.rootDir, "memory/worker-scheduler", ["workerSchedulerReportId"]);
     return {
-      distributedRuntime: distributed.distributedRuntimeDemoId,
-      distributedQueue: distributedQueue.distributedQueueReportId,
-      replay: replay.replayDemoId || replay.status,
-      selfHealing: selfHealing.runtimeRecoveryDemoId || selfHealing.status,
+      distributedRuntime: distributed.id,
+      distributedQueue: distributedQueue.id,
+      replay: replay.id,
+      selfHealing: selfHealing.id,
       streaming: "memory/multiprocess-workers is streaming-readable",
-      transport: transport.transportReportId,
-      telemetry: telemetry.telemetryReportId,
+      transport: transport.id,
+      telemetry: telemetry.id,
       dashboard: "multiprocess report is dashboard-readable",
-      scheduler: scheduler.workerSchedulerReportId
+      scheduler: scheduler.id,
+      sources: {
+        distributedRuntime: distributed,
+        distributedQueue,
+        replay,
+        selfHealing,
+        transport,
+        telemetry,
+        scheduler
+      }
     };
   }
 }

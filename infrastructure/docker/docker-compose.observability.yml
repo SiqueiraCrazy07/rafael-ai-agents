@@ -4,8 +4,17 @@ services:
       context: ../..
       dockerfile: infrastructure/docker/streaming.Dockerfile
     read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     networks:
       - rafael-observability
+    labels:
+      rafael.runtime.service: "streaming"
+      rafael.runtime.role: "streaming"
+      rafael.runtime.readonly-safe: "true"
+      rafael.runtime.kubernetes-deploy: "false"
     environment:
       RUNTIME_READONLY_MODE: "true"
       RUNTIME_STREAM_LOCAL_ONLY: "true"
@@ -13,21 +22,45 @@ services:
     volumes:
       - runtime-data:/app/runtime-data
       - runtime-memory:/app/memory
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('streaming-health-readonly')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
   dashboard:
     build:
       context: ../..
       dockerfile: infrastructure/docker/dashboard.Dockerfile
     read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
     networks:
       - rafael-observability
+    labels:
+      rafael.runtime.service: "dashboard"
+      rafael.runtime.role: "dashboard"
+      rafael.runtime.readonly-safe: "true"
+      rafael.runtime.kubernetes-deploy: "false"
     environment:
       RUNTIME_READONLY_MODE: "true"
+      RUNTIME_SAFE_MODE: "true"
       DASHBOARD_READONLY_MODE: "true"
       API_REQUIRE_AUTH: "true"
     volumes:
       - runtime-data:/app/runtime-data:ro
       - runtime-memory:/app/memory:ro
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "node", "-e", "console.log('dashboard-health-readonly')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 networks:
   rafael-observability:
