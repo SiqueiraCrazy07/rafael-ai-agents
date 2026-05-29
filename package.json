@@ -27,6 +27,7 @@
     "auth:demo": "node governance/auth/demo/runtime-auth-demo.js",
     "api-gateway:demo": "node api/gateway/demo/runtime-api-gateway-demo.js",
     "docker:demo": "node infrastructure/docker/demo/runtime-containerization-demo.js",
+    "product-factory:demo": "node product-factory/demo/product-factory-demo.js",
     "streaming:demo": "node runtime/streaming/demo/runtime-streaming-demo.js",
     "runtime:validate-integration": "node runtime/validation/runtime-validation-demo.js",
     "workers:demo": "node workers/demo/worker-runtime-demo.js",
