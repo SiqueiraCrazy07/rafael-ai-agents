@@ -1,0 +1,14 @@
+{
+  "productName": "Crm Platform",
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events",
+    "contacts",
+    "deals"
+  ],
+  "seedOnly": true,
+  "destructiveActions": false,
+  "readonly": true
+}

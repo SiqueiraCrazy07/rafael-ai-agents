@@ -1,0 +1,12 @@
+{
+  "productName": "Chatbot Platform",
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events"
+  ],
+  "seedOnly": true,
+  "destructiveActions": false,
+  "readonly": true
+}

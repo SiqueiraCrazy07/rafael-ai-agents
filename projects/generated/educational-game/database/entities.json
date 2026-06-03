@@ -1,0 +1,21 @@
+{
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events",
+    "missions",
+    "scores",
+    "lessons",
+    "mastery_states"
+  ],
+  "endpoints": [
+    "/auth/session",
+    "/users",
+    "/progress",
+    "/content",
+    "/dashboard",
+    "/missions"
+  ],
+  "readonly": true
+}

@@ -1,0 +1,16 @@
+{
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events"
+  ],
+  "endpoints": [
+    "/auth/session",
+    "/users",
+    "/progress",
+    "/content",
+    "/dashboard"
+  ],
+  "readonly": true
+}

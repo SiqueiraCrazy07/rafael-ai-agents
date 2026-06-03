@@ -1,0 +1,16 @@
+{
+  "productName": "Educational Game",
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events",
+    "missions",
+    "scores",
+    "lessons",
+    "mastery_states"
+  ],
+  "seedOnly": true,
+  "destructiveActions": false,
+  "readonly": true
+}

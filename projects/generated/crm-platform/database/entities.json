@@ -1,0 +1,19 @@
+{
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events",
+    "contacts",
+    "deals"
+  ],
+  "endpoints": [
+    "/auth/session",
+    "/users",
+    "/progress",
+    "/content",
+    "/dashboard",
+    "/contacts"
+  ],
+  "readonly": true
+}

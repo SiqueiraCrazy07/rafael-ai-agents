@@ -1,0 +1,80 @@
+{
+  "demoId": "product_demo_1780415949123_41de61",
+  "productName": "Educational Game",
+  "category": "game",
+  "screens": [
+    "onboarding",
+    "home dashboard",
+    "detail view",
+    "settings",
+    "analytics",
+    "lesson player",
+    "practice review",
+    "mastery map"
+  ],
+  "sampleData": {
+    "mvpFeatures": [
+      "core mechanic",
+      "3 levels",
+      "score feedback",
+      "learning summary"
+    ],
+    "firstBacklogItems": [
+      {
+        "taskId": "product-foundation_1",
+        "title": "Define project shell",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "product-foundation_2",
+        "title": "Define navigation",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "product-foundation_3",
+        "title": "Define role model",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "product-foundation_4",
+        "title": "Define JSON fallback",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "core-mvp_1",
+        "title": "Define core mechanic",
+        "priority": 2,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      }
+    ],
+    "curriculumGenerated": true
+  },
+  "prototypeMode": "documentation-and-json-only",
+  "readonly": true,
+  "deployExecuted": false,
+  "safetyMode": "readonly-safe-product-demo-generator"
+}

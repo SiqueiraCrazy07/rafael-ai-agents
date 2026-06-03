@@ -1,0 +1,80 @@
+{
+  "demoId": "product_demo_1780415949113_63f262",
+  "productName": "English Learning Platform",
+  "category": "education",
+  "screens": [
+    "onboarding",
+    "home dashboard",
+    "detail view",
+    "settings",
+    "analytics",
+    "lesson player",
+    "practice review",
+    "mastery map"
+  ],
+  "sampleData": {
+    "mvpFeatures": [
+      "diagnostic quiz",
+      "daily micro-lessons",
+      "vocabulary review",
+      "learner dashboard"
+    ],
+    "firstBacklogItems": [
+      {
+        "taskId": "product-foundation_1",
+        "title": "Define project shell",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "product-foundation_2",
+        "title": "Define navigation",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "product-foundation_3",
+        "title": "Define role model",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "product-foundation_4",
+        "title": "Define JSON fallback",
+        "priority": 1,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      },
+      {
+        "taskId": "core-mvp_1",
+        "title": "Define diagnostic quiz",
+        "priority": 2,
+        "acceptanceCriteria": [
+          "documented",
+          "readonly-safe",
+          "validated by readiness checks"
+        ]
+      }
+    ],
+    "curriculumGenerated": true
+  },
+  "prototypeMode": "documentation-and-json-only",
+  "readonly": true,
+  "deployExecuted": false,
+  "safetyMode": "readonly-safe-product-demo-generator"
+}

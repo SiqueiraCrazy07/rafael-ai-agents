@@ -1,0 +1,14 @@
+{
+  "productName": "English Learning Platform",
+  "entities": [
+    "users",
+    "progress",
+    "content",
+    "dashboard_events",
+    "lessons",
+    "mastery_states"
+  ],
+  "seedOnly": true,
+  "destructiveActions": false,
+  "readonly": true
+}
