@@ -1,0 +1,3 @@
+# Speaking Listening Flow
+
+- {"speakingListeningId":"speaking_listening_english-learning-platform","enabled":true,"listeningPractice":["listen to phrase","choose meaning","repeat after delay"],"speakingPrompt":["read prompt","speak placeholder","self-check pronunciation prompt"],"pronunciationPlaceholder":"no speech engine in V1; plan-only placeholder","repetitionLoop":["listen","speak","compare","repeat weak phrase"],"conversationPractice":["greeting","short response","follow-up","recap vocabulary"],"vocabularyRecall":["see meaning","recall word","use in phrase"],"phraseBuilder":["choose subject","choose verb","choose context","speak/read sentence"],"readonly":true,"mediaGenerated":false,"safetyMode":"readonly-safe-speaking-listening-flow-generator"}

@@ -1,0 +1,343 @@
+{
+  "experiencePlanId": "experience_plan_crm-platform_1780509744799",
+  "project": {
+    "projectSlug": "crm-platform",
+    "productName": "Crm Platform",
+    "category": "crm",
+    "productType": "business-crm"
+  },
+  "gameplayLoop": {
+    "loopId": "gameplay_loop_crm-platform",
+    "objective": "Complete guided tasks in Crm Platform",
+    "playerAction": "navigate, complete task and review outcome",
+    "feedback": "immediate visual and textual feedback",
+    "reward": "XP, progress signal and next-step unlock",
+    "progression": "advance by workflow completion",
+    "healthyRepetition": "short attempts with review breaks and no punitive failure state",
+    "learningLoop": [
+      "attempt challenge",
+      "receive feedback",
+      "review weak concept",
+      "retry with support",
+      "advance after mastery"
+    ],
+    "readonly": true,
+    "safetyMode": "readonly-safe-gameplay-loop-engine"
+  },
+  "minigames": {
+    "minigameId": "minigames_crm-platform",
+    "recommended": [
+      {
+        "subject": "portugues",
+        "name": "Sentence Builder",
+        "mechanic": "assemble words into clear sentences",
+        "order": 1,
+        "completionCriteria": "finish challenge with mastery threshold or guided retry",
+        "adaptiveHook": "difficulty changes from accuracy and response time"
+      },
+      {
+        "subject": "ingles",
+        "name": "Phrase Match",
+        "mechanic": "match audio/text prompts to meaning",
+        "order": 2,
+        "completionCriteria": "finish challenge with mastery threshold or guided retry",
+        "adaptiveHook": "difficulty changes from accuracy and response time"
+      },
+      {
+        "subject": "memoria",
+        "name": "Recall Cards",
+        "mechanic": "flip and recall concepts with spaced review",
+        "order": 3,
+        "completionCriteria": "finish challenge with mastery threshold or guided retry",
+        "adaptiveHook": "difficulty changes from accuracy and response time"
+      },
+      {
+        "subject": "leitura",
+        "name": "Reading Path",
+        "mechanic": "choose the sentence that completes the idea",
+        "order": 4,
+        "completionCriteria": "finish challenge with mastery threshold or guided retry",
+        "adaptiveHook": "difficulty changes from accuracy and response time"
+      },
+      {
+        "subject": "escrita",
+        "name": "Write It",
+        "mechanic": "complete short written responses with feedback",
+        "order": 5,
+        "completionCriteria": "finish challenge with mastery threshold or guided retry",
+        "adaptiveHook": "difficulty changes from accuracy and response time"
+      },
+      {
+        "subject": "logica",
+        "name": "Pattern Gate",
+        "mechanic": "find rules and unlock the next challenge",
+        "order": 6,
+        "completionCriteria": "finish challenge with mastery threshold or guided retry",
+        "adaptiveHook": "difficulty changes from accuracy and response time"
+      }
+    ],
+    "readonly": true,
+    "mediaGenerated": false,
+    "safetyMode": "readonly-safe-minigame-generator"
+  },
+  "missions": {
+    "missionSystemId": "missions_crm-platform",
+    "dailyMissions": [
+      {
+        "objective": "complete one practice loop",
+        "criteria": "one challenge completed",
+        "reward": "10 XP"
+      },
+      {
+        "objective": "review weak content",
+        "criteria": "one review item recovered",
+        "reward": "streak protection"
+      },
+      {
+        "objective": "finish current mission",
+        "criteria": "current objective done",
+        "reward": "badge progress"
+      }
+    ],
+    "levelMissions": [
+      {
+        "level": 1,
+        "objective": "finish onboarding challenge",
+        "domainProgression": "foundation"
+      },
+      {
+        "level": 2,
+        "objective": "complete guided practice",
+        "domainProgression": "guided practice"
+      },
+      {
+        "level": 3,
+        "objective": "complete independent challenge",
+        "domainProgression": "mastery candidate"
+      }
+    ],
+    "completionCriteria": [
+      "accuracy threshold",
+      "retry completion",
+      "review checkpoint",
+      "mission acknowledgement"
+    ],
+    "masteryProgression": "unlock next mission only after domain evidence",
+    "readonly": true,
+    "safetyMode": "readonly-safe-mission-system-generator"
+  },
+  "rewards": {
+    "rewardSystemId": "rewards_crm-platform",
+    "xp": {
+      "challenge": 20,
+      "review": 10,
+      "mastery": 50,
+      "dailyMission": 15
+    },
+    "coins": {
+      "enabled": false,
+      "earnRule": "earn small amounts from completed missions"
+    },
+    "badges": [
+      "first mission",
+      "review hero",
+      "mastery unlocked",
+      "streak keeper"
+    ],
+    "streaks": [
+      "daily practice",
+      "weekly review",
+      "no-hint completion"
+    ],
+    "achievements": [
+      "complete onboarding",
+      "recover weak skill",
+      "finish level",
+      "master topic"
+    ],
+    "unlocks": [
+      "next challenge",
+      "new visual theme placeholder",
+      "advanced mission"
+    ],
+    "readonly": true,
+    "safetyMode": "readonly-safe-reward-system-generator"
+  },
+  "hud": {
+    "hudId": "hud_crm-platform",
+    "elements": [
+      "progress bar",
+      "XP counter",
+      "level indicator",
+      "lives or attempts",
+      "correct and error feedback",
+      "current mission"
+    ],
+    "layout": {
+      "top": [
+        "progress bar",
+        "level indicator",
+        "XP counter"
+      ],
+      "main": [
+        "challenge prompt",
+        "interaction area"
+      ],
+      "side": [
+        "current mission",
+        "attempts"
+      ],
+      "bottom": [
+        "feedback",
+        "next action"
+      ]
+    },
+    "states": [
+      "idle",
+      "attempting",
+      "correct",
+      "needs-review",
+      "reward",
+      "mastery"
+    ],
+    "accessibility": [
+      "status not color-only",
+      "visible focus",
+      "readable counters"
+    ],
+    "readonly": true,
+    "safetyMode": "readonly-safe-hud-generator"
+  },
+  "visualFeedback": {
+    "feedbackId": "visual_feedback_crm-platform",
+    "positive": [
+      "progress glow",
+      "XP pulse",
+      "badge reveal placeholder",
+      "clear success copy"
+    ],
+    "errorWithoutFrustration": [
+      "soft correction",
+      "hint reveal",
+      "try-again path",
+      "no penalty language"
+    ],
+    "microinteractions": [
+      "button press",
+      "answer lock",
+      "progress tick",
+      "mission completed state"
+    ],
+    "plannedAnimations": [
+      "short reward burst",
+      "card flip",
+      "progress fill",
+      "level unlock"
+    ],
+    "reinforcement": [
+      "show why answer works",
+      "connect attempt to mastery",
+      "invite one next retry"
+    ],
+    "mediaGenerated": false,
+    "readonly": true,
+    "safetyMode": "readonly-safe-visual-feedback-engine"
+  },
+  "interactionFlows": {
+    "flowId": "interaction_flows_crm-platform",
+    "onboarding": [
+      "choose goal",
+      "complete sample interaction",
+      "see first reward",
+      "start mission"
+    ],
+    "exercise": [
+      "read prompt",
+      "interact",
+      "submit",
+      "receive feedback",
+      "retry or continue"
+    ],
+    "review": [
+      "surface weak item",
+      "recall",
+      "compare feedback",
+      "schedule next review"
+    ],
+    "reward": [
+      "show XP",
+      "update progress",
+      "show unlock",
+      "offer next mission"
+    ],
+    "returnAfterError": [
+      "explain mistake",
+      "reduce difficulty",
+      "offer guided retry",
+      "restore confidence"
+    ],
+    "readonly": true,
+    "safetyMode": "readonly-safe-interaction-flow-generator"
+  },
+  "quizInteractions": {
+    "quizId": "quiz_interactions_crm-platform",
+    "adaptiveQuiz": {
+      "rule": "question difficulty follows accuracy, speed and mastery state",
+      "retry": "missed items return after feedback and delay"
+    },
+    "types": [
+      "multiple choice",
+      "drag and drop",
+      "matching",
+      "fill in the blanks",
+      "written response"
+    ],
+    "scoring": [
+      "accuracy",
+      "attempt count",
+      "time-to-answer",
+      "hint usage"
+    ],
+    "feedback": "specific feedback per choice and retry path",
+    "readonly": true,
+    "safetyMode": "readonly-safe-quiz-interaction-generator"
+  },
+  "speakingListening": {
+    "speakingListeningId": "speaking_listening_crm-platform",
+    "enabled": false,
+    "listeningPractice": [],
+    "speakingPrompt": [],
+    "pronunciationPlaceholder": "not required",
+    "repetitionLoop": [],
+    "conversationPractice": [],
+    "vocabularyRecall": [],
+    "phraseBuilder": [],
+    "readonly": true,
+    "mediaGenerated": false,
+    "safetyMode": "readonly-safe-speaking-listening-flow-generator"
+  },
+  "adaptiveInteractions": {
+    "adaptiveInteractionId": "adaptive_interactions_crm-platform",
+    "difficultyAdjustment": [
+      "increase challenge after high accuracy and fast completion",
+      "lower complexity after repeated misses",
+      "switch to guided mode when frustration risk rises"
+    ],
+    "errorRepetition": "missed concepts return as short retry and later review",
+    "masteryAdvance": "advance after threshold and delayed recall signal",
+    "weakContentReinforcement": [
+      "surface weak topic",
+      "add hint",
+      "schedule review",
+      "offer easier variant"
+    ],
+    "reviewSuggestion": "suggest review when retention risk or streak break appears",
+    "readonly": true,
+    "externalAiUsed": false,
+    "safetyMode": "readonly-safe-adaptive-interaction-engine"
+  },
+  "readonly": true,
+  "externalAiUsed": false,
+  "mediaGenerated": false,
+  "safetyMode": "readonly-safe-interactive-experience-plan"
+}

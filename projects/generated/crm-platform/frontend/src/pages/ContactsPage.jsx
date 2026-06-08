@@ -1,16 +1,22 @@
-import { DashboardCard } from "../components/DashboardCard.jsx";
-import { ContentList } from "../components/ContentList.jsx";
-import { ProgressTracker } from "../components/ProgressTracker.jsx";
-import { usePrototypeData } from "../hooks/usePrototypeData.js";
+import { PageHeader } from "../components/PageHeader.jsx";
+import { MetricCard } from "../components/MetricCard.jsx";
+import { StatusList } from "../components/StatusList.jsx";
 
 export function ContactsPage() {
-  const data = usePrototypeData();
+  const contacts = [
+    { title: "Ana Souza", detail: "Qualified lead - proposal sent" },
+    { title: "Rafael Lima", detail: "Discovery call scheduled" },
+    { title: "Marina Costa", detail: "Needs follow-up" }
+  ];
   return (
     <section>
-      <h1>Crm Platform</h1>
-      <DashboardCard title="Contacts" value="Prototype" detail="Readonly generated screen" />
-      <ProgressTracker items={data.features.map((label, index) => ({ id: index, label }))} />
-      <ContentList content={data.features.map((title, index) => ({ id: index, title, summary: "Generated MVP feature" }))} />
+      <PageHeader kicker="CRM" title="Crm Platform Contacts" />
+      <div className="grid">
+        <div className="span-4"><MetricCard title="Pipeline" value="R$ 42k" detail="readonly forecast" /></div>
+        <div className="span-4"><MetricCard title="Contacts" value="128" detail="demo records" /></div>
+        <div className="span-4"><MetricCard title="Next actions" value="9" detail="follow-ups" tone="warning" /></div>
+        <div className="span-12 card"><StatusList items={contacts} /></div>
+      </div>
     </section>
   );
 }

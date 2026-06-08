@@ -13,3 +13,7 @@ export const routes = [
 ];
 
 export const navigation = routes.map(({ path, label }) => ({ path, label }));
+
+export function findRoute(path) {
+  return routes.find((route) => route.path === path) || routes[0];
+}

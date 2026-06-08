@@ -1,0 +1,290 @@
+{
+  "tutorPlanId": "tutor_plan_english-learning-platform_1780509748903",
+  "project": {
+    "projectSlug": "english-learning-platform",
+    "productName": "English Learning Platform",
+    "category": "education"
+  },
+  "personality": {
+    "role": "adaptive learning tutor",
+    "tone": "clear, reflective and goal-oriented",
+    "boundaries": [
+      "pedagogical placeholder",
+      "no external AI",
+      "no voice processing",
+      "no punitive feedback"
+    ]
+  },
+  "conversationalLearning": {
+    "conversationalLearningId": "conversational_learning_english-learning-platform",
+    "practice": [
+      "ask learner to explain the concept in their own words",
+      "respond with a short scaffolded follow-up",
+      "ask one transfer question",
+      "close with a review prompt"
+    ],
+    "questions": [
+      "What did you notice in this English Learning Platform activity?",
+      "Which part felt easy?",
+      "Which part should we practice again?",
+      "Can you try a similar example without hints?"
+    ],
+    "responses": [
+      "I will guide you one step at a time.",
+      "Good attempt. Let's connect this answer to the rule.",
+      "Let's review the weak part before moving forward."
+    ],
+    "followUps": [
+      "try a shorter version",
+      "explain your reasoning",
+      "compare two possible answers",
+      "repeat after feedback"
+    ],
+    "contextualReinforcement": "connect each response to the current skill, mission and mastery target",
+    "readonly": true,
+    "externalAiUsed": false,
+    "safetyMode": "readonly-safe-conversational-learning-engine"
+  },
+  "adaptiveTutor": {
+    "adaptiveTutorId": "adaptive_tutor_english-learning-platform",
+    "difficulty": [
+      "start with guided examples",
+      "increase challenge after mastery evidence",
+      "return to review mode after repeated errors"
+    ],
+    "tone": "clear, reflective and goal-oriented",
+    "explanation": "step-by-step with optional deeper rationale",
+    "speed": "self-paced with recap checkpoints",
+    "depth": "concept, example, application and reflection",
+    "profileAdaptation": [
+      "age band",
+      "retention risk",
+      "error pattern",
+      "engagement signal"
+    ],
+    "readonly": true,
+    "externalAiUsed": false,
+    "safetyMode": "readonly-safe-adaptive-tutor-engine"
+  },
+  "studentGuidance": {
+    "guidanceId": "student_guidance_english-learning-platform",
+    "orientation": [
+      "show the next best activity",
+      "explain the learning goal",
+      "offer one hint before full correction"
+    ],
+    "tips": [
+      "read the prompt twice",
+      "try without hints first",
+      "use the feedback to retry",
+      "review weak items before the next level"
+    ],
+    "reinforcement": [
+      "connect effort to mastery",
+      "show what improved",
+      "name the skill being practiced"
+    ],
+    "coaching": [
+      "plan a short practice session",
+      "choose a review task",
+      "set one achievable goal"
+    ],
+    "encouragement": "supportive and specific, without false praise or pressure",
+    "readonly": true,
+    "safetyMode": "readonly-safe-student-guidance-engine"
+  },
+  "errorCorrection": {
+    "correctionId": "error_correction_english-learning-platform",
+    "contextualCorrection": [
+      "identify the exact misconception",
+      "show the correct reasoning",
+      "offer a similar retry",
+      "schedule review if error repeats"
+    ],
+    "friendlyExplanation": "short explanation that separates the learner from the mistake",
+    "noPunishmentReinforcement": [
+      "no shame language",
+      "retry is normal",
+      "progress remains visible",
+      "feedback points to next action"
+    ],
+    "suggestedReview": [
+      "review prerequisite concept",
+      "try one guided example",
+      "retry original challenge",
+      "mark weak skill for spaced review"
+    ],
+    "readonly": true,
+    "safetyMode": "readonly-safe-error-correction-engine"
+  },
+  "motivation": {
+    "motivationId": "motivation_english-learning-platform",
+    "motivation": [
+      "remind learner of the current goal",
+      "show visible progress",
+      "reduce next action to a small step"
+    ],
+    "encouragement": [
+      "You improved the part you practiced.",
+      "One focused retry is enough for this step.",
+      "Let's protect your progress with a quick review."
+    ],
+    "streakReinforcement": [
+      "daily practice acknowledged",
+      "missed day returns with comeback mission",
+      "streak framed as consistency, not pressure"
+    ],
+    "positiveFeedback": [
+      "specific success signal",
+      "skill named clearly",
+      "next challenge unlocked"
+    ],
+    "progressCelebration": [
+      "mastery checkpoint",
+      "review recovered",
+      "mission completed"
+    ],
+    "readonly": true,
+    "safetyMode": "readonly-safe-motivation-engine"
+  },
+  "pronunciationCoaching": {
+    "pronunciationCoachingId": "pronunciation_coaching_english-learning-platform",
+    "enabled": true,
+    "speakingPrompts": [
+      "repeat the phrase slowly",
+      "say the phrase in a short answer",
+      "use the new word in your own sentence"
+    ],
+    "phoneticGuidance": [
+      "stress the key syllable",
+      "notice the vowel sound",
+      "compare short and long sounds"
+    ],
+    "pronunciationCheckpoints": [
+      "listen and repeat",
+      "self-check clarity",
+      "repeat weak phrase after feedback"
+    ],
+    "repetitionLoops": [
+      "hear",
+      "repeat",
+      "self-check",
+      "retry",
+      "use in conversation"
+    ],
+    "placeholderOnly": true,
+    "voiceProcessingExecuted": false,
+    "readonly": true,
+    "safetyMode": "readonly-safe-pronunciation-coaching-engine"
+  },
+  "conversationSimulation": {
+    "conversationSimulationId": "conversation_simulation_english-learning-platform",
+    "dialogs": [
+      {
+        "tutor": "Hi. What did you practice today?",
+        "learner": "I practiced vocabulary.",
+        "followUp": "Use one new word in a sentence."
+      },
+      {
+        "tutor": "Let's roleplay ordering something.",
+        "learner": "I would like...",
+        "followUp": "Now change the item and repeat."
+      }
+    ],
+    "scenarios": [
+      "greeting",
+      "ordering",
+      "asking for help",
+      "daily routine"
+    ],
+    "roleplay": [
+      "traveler and guide",
+      "student and teacher",
+      "customer and attendant"
+    ],
+    "contextualPractice": "scenario difficulty adapts from mastery and error pattern",
+    "readonly": true,
+    "externalAiUsed": false,
+    "safetyMode": "readonly-safe-conversation-simulation-engine"
+  },
+  "learningRecommendation": {
+    "recommendationId": "learning_recommendation_english-learning-platform",
+    "suggestedReview": [
+      "review weakest recent skill",
+      "repeat missed quiz format",
+      "return to spaced review checkpoint"
+    ],
+    "recommendedExercises": [
+      "one guided retry",
+      "one independent challenge",
+      "one recall prompt",
+      "one reflection question"
+    ],
+    "adaptiveReinforcement": [
+      "more examples after misconception",
+      "shorter task after low confidence",
+      "harder task after mastery"
+    ],
+    "nextIdealSkill": "the next prerequisite skill not yet mastered",
+    "readonly": true,
+    "safetyMode": "readonly-safe-learning-recommendation-engine"
+  },
+  "studentMemory": {
+    "studentMemoryId": "student_memory_english-learning-platform",
+    "persistenceTarget": "memory/ai-tutor",
+    "history": [
+      "sessions",
+      "conversation summaries",
+      "completed tutor flows"
+    ],
+    "difficulties": [
+      "missed skills",
+      "repeated misconceptions",
+      "low-confidence items"
+    ],
+    "progress": [
+      "mastery checkpoints",
+      "completed missions",
+      "review recovery"
+    ],
+    "reviews": [
+      "scheduled review",
+      "completed review",
+      "overdue review"
+    ],
+    "mastery": [
+      "current domain",
+      "threshold evidence",
+      "next unlock"
+    ],
+    "jsonFallback": true,
+    "readonly": true,
+    "safetyMode": "readonly-safe-student-memory-engine"
+  },
+  "progressCoaching": {
+    "progressCoachingId": "progress_coaching_english-learning-platform",
+    "progressSummary": [
+      "current mission status",
+      "recent review completion",
+      "mastery checkpoint progress"
+    ],
+    "currentMastery": "summarize mastered, practicing and weak skills",
+    "weakAreas": [
+      "repeated errors",
+      "missed reviews",
+      "slow recall"
+    ],
+    "suggestedGoals": [
+      "complete one review checkpoint",
+      "retry one weak skill",
+      "finish one conversation or challenge"
+    ],
+    "cadence": "short summary after session and weekly recap placeholder",
+    "readonly": true,
+    "safetyMode": "readonly-safe-progress-coaching-engine"
+  },
+  "readonly": true,
+  "externalAiUsed": false,
+  "voiceProcessingExecuted": false,
+  "safetyMode": "readonly-safe-ai-tutor-plan"
+}

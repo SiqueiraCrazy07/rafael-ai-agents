@@ -1,16 +1,12 @@
-import { DashboardCard } from "../components/DashboardCard.jsx";
-import { ContentList } from "../components/ContentList.jsx";
-import { ProgressTracker } from "../components/ProgressTracker.jsx";
-import { usePrototypeData } from "../hooks/usePrototypeData.js";
+import { PageHeader } from "../components/PageHeader.jsx";
+import { StatusList } from "../components/StatusList.jsx";
 
 export function ContentPage() {
-  const data = usePrototypeData();
+  const content = ["core mechanic","3 levels","score feedback","learning summary"].map((title, index) => ({ title, detail: "Content module " + (index + 1) + " generated from blueprint" }));
   return (
     <section>
-      <h1>Educational Game</h1>
-      <DashboardCard title="Content" value="Prototype" detail="Readonly generated screen" />
-      <ProgressTracker items={data.features.map((label, index) => ({ id: index, label }))} />
-      <ContentList content={data.features.map((title, index) => ({ id: index, title, summary: "Generated MVP feature" }))} />
+      <PageHeader kicker="Content" title="Educational Game Content" />
+      <div className="card"><StatusList items={content} /></div>
     </section>
   );
 }

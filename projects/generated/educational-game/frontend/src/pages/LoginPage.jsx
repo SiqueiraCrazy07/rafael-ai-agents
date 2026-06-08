@@ -1,16 +1,15 @@
-import { DashboardCard } from "../components/DashboardCard.jsx";
-import { ContentList } from "../components/ContentList.jsx";
-import { ProgressTracker } from "../components/ProgressTracker.jsx";
-import { usePrototypeData } from "../hooks/usePrototypeData.js";
+import { PageHeader } from "../components/PageHeader.jsx";
 
 export function LoginPage() {
-  const data = usePrototypeData();
   return (
     <section>
-      <h1>Educational Game</h1>
-      <DashboardCard title="Login" value="Prototype" detail="Readonly generated screen" />
-      <ProgressTracker items={data.features.map((label, index) => ({ id: index, label }))} />
-      <ContentList content={data.features.map((title, index) => ({ id: index, title, summary: "Generated MVP feature" }))} />
+      <PageHeader kicker="Readonly auth" title="Educational Game Login" />
+      <form className="card login-panel">
+        <div className="field"><label>Email</label><input value="demo@example.com" readOnly /></div>
+        <div className="field"><label>Password</label><input value="readonly-demo" readOnly type="password" /></div>
+        <button className="button" type="button">Enter prototype</button>
+        <p className="muted">Authentication is a non-destructive placeholder in V1.</p>
+      </form>
     </section>
   );
 }

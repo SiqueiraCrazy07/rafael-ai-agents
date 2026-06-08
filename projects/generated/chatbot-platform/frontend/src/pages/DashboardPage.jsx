@@ -1,16 +1,21 @@
-import { DashboardCard } from "../components/DashboardCard.jsx";
-import { ContentList } from "../components/ContentList.jsx";
-import { ProgressTracker } from "../components/ProgressTracker.jsx";
-import { usePrototypeData } from "../hooks/usePrototypeData.js";
+import { PageHeader } from "../components/PageHeader.jsx";
+import { MetricCard } from "../components/MetricCard.jsx";
+import { GamifiedHud } from "../components/GamifiedHud.jsx";
+import { StatusList } from "../components/StatusList.jsx";
 
 export function DashboardPage() {
-  const data = usePrototypeData();
+  const features = ["FAQ bot","conversation history","admin prompts"].map((title) => ({ title, detail: "Generated MVP surface" }));
   return (
     <section>
-      <h1>Chatbot Platform</h1>
-      <DashboardCard title="Dashboard" value="Prototype" detail="Readonly generated screen" />
-      <ProgressTracker items={data.features.map((label, index) => ({ id: index, label }))} />
-      <ContentList content={data.features.map((title, index) => ({ id: index, title, summary: "Generated MVP feature" }))} />
+      <PageHeader kicker="Prototype dashboard" title="Chatbot Platform" action={<button className="button" type="button">Readonly preview</button>} />
+      <div className="grid">
+        <div className="span-3"><MetricCard title="Readiness" value="V1" detail="rendered prototype" tone="success" /></div>
+        <div className="span-3"><MetricCard title="Routes" value="5" detail="functional hash nav" /></div>
+        <div className="span-3"><MetricCard title="Tokens" value="Applied" detail="visual-ui source" /></div>
+        <div className="span-3"><MetricCard title="Fallback" value="JSON" detail="preserved" /></div>
+        <div className="span-12"><GamifiedHud xp={72} streak={5} level={3} mission="Complete prototype walkthrough" /></div>
+        <div className="span-12 card"><h2>MVP surfaces</h2><StatusList items={features} /></div>
+      </div>
     </section>
   );
 }

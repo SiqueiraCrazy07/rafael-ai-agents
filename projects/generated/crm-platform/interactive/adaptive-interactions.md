@@ -1,0 +1,3 @@
+# Adaptive Interactions
+
+- {"adaptiveInteractionId":"adaptive_interactions_crm-platform","difficultyAdjustment":["increase challenge after high accuracy and fast completion","lower complexity after repeated misses","switch to guided mode when frustration risk rises"],"errorRepetition":"missed concepts return as short retry and later review","masteryAdvance":"advance after threshold and delayed recall signal","weakContentReinforcement":["surface weak topic","add hint","schedule review","offer easier variant"],"reviewSuggestion":"suggest review when retention risk or streak break appears","readonly":true,"externalAiUsed":false,"safetyMode":"readonly-safe-adaptive-interaction-engine"}

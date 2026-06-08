@@ -1,0 +1,23 @@
+class MissionSystemGenerator {
+  generate(project) {
+    return {
+      missionSystemId: `missions_${project.projectSlug}`,
+      dailyMissions: [
+        { objective: "complete one practice loop", criteria: "one challenge completed", reward: "10 XP" },
+        { objective: "review weak content", criteria: "one review item recovered", reward: "streak protection" },
+        { objective: "finish current mission", criteria: "current objective done", reward: "badge progress" }
+      ],
+      levelMissions: [
+        { level: 1, objective: "finish onboarding challenge", domainProgression: "foundation" },
+        { level: 2, objective: "complete guided practice", domainProgression: "guided practice" },
+        { level: 3, objective: "complete independent challenge", domainProgression: "mastery candidate" }
+      ],
+      completionCriteria: ["accuracy threshold", "retry completion", "review checkpoint", "mission acknowledgement"],
+      masteryProgression: "unlock next mission only after domain evidence",
+      readonly: true,
+      safetyMode: "readonly-safe-mission-system-generator"
+    };
+  }
+}
+
+module.exports = { MissionSystemGenerator };

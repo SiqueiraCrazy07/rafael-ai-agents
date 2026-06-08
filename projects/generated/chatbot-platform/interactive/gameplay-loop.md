@@ -1,0 +1,3 @@
+# Gameplay Loop
+
+- {"loopId":"gameplay_loop_chatbot-platform","objective":"Complete guided tasks in Chatbot Platform","playerAction":"navigate, complete task and review outcome","feedback":"immediate visual and textual feedback","reward":"XP, progress signal and next-step unlock","progression":"advance by workflow completion","healthyRepetition":"short attempts with review breaks and no punitive failure state","learningLoop":["attempt challenge","receive feedback","review weak concept","retry with support","advance after mastery"],"readonly":true,"safetyMode":"readonly-safe-gameplay-loop-engine"}

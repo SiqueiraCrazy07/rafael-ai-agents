@@ -1,0 +1,13 @@
+{
+  "projectSlug": "chatbot-platform",
+  "readonly": true,
+  "deployExecuted": false,
+  "dependenciesInstalled": false,
+  "externalAiUsed": false,
+  "sources": {
+    "visualUi": true,
+    "interactive": true,
+    "aiTutor": false
+  },
+  "generatedAt": "2026-06-03T18:02:37.722Z"
+}
